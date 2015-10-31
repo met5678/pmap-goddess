@@ -1,0 +1,10 @@
+<template name="screenSurface">
+	<div class="screen-surface" id="surface-{{_id}}">
+		{{#if content.video}}
+			<video class="screen-surface-video"></video>
+		{{/if}}
+		{{#if content.fugueInk}}
+			<div class="screen-surface-fugueInk"></div>
+		{{/if}}
+	</div>
+</template>

@@ -1,0 +1,1 @@
+Surfaces = new Mongo.Collection('surfaces');
