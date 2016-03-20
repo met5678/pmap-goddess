@@ -2,10 +2,9 @@
   // Server authentication info
   "servers": [
     {
-      "host": "hostname",
-      "username": "root",
-      "password": "password"
-      "pem": "~/.ssh/id_rsa"
+      "host": "ec2-52-91-37-29.compute-1.amazonaws.com",
+      "username": "ubuntu",
+      "pem": "~/.ssh/AWS-Personal.pem"
     }
   ],
 

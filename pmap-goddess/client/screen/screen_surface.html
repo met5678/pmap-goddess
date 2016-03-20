@@ -1,7 +1,12 @@
 <template name="screenSurface">
-	<div class="screen-surface" id="surface-{{_id}}">
+	<div class="screen-surface" id="surface-{{_id}}" style="
+		height: {{height}}px;
+		width: {{width}}px;
+		transform: {{transform}};">
 		{{#if content.video}}
-			<video class="screen-surface-video"></video>
+			<video class="screen-surface-video" height="{{height}}" width="{{width}}" autoplay="true" muted="true" loop="true">
+				<source src="{{content.video}}" type="video/webm">
+			</video>
 		{{/if}}
 		{{#if content.fugueInk}}
 			<div class="screen-surface-fugueInk"></div>

@@ -1,0 +1,33 @@
+<template name="admin">
+	<table>
+		<thead>
+			<tr>
+				<th>_id</th>
+				<th>type</th>
+				<th>video</th>
+				<th>corners</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		{{#each surfaces}}
+			{{> adminSurfaceRow}}
+		{{/each}}
+		</tbody>
+	</table>
+
+	<button id="addSurface"></button>
+</template>
+
+<template name="adminSurfaceRow">
+	<tr>
+		<td>{{_id}}</td>
+		<td><button class="surface-type">{{type}}</button></td>
+		<td></td>
+		<td></td>
+		<td><button class="surface-delete">Delete</button></td>
+	</tr>
+</template>
+
+<template name="adminCorner">
+	</template>
