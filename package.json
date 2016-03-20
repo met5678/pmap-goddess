@@ -1,0 +1,19 @@
+{
+  "name": "video-map-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "blinds.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^2.2.0",
+    "lodash": "^3.10.1",
+    "numeric": "^1.2.6",
+    "random-tools": "0.0.5",
+    "screenfull": "^3.0.0",
+    "tween.js": "^16.3.1"
+  }
+}
