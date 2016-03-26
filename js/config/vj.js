@@ -12,8 +12,12 @@ module.exports = {
   groovy: {
     phraseLength: 16,
     alternateFrac: .635,
-    speedModFrac: 1,
     differentFrac: .35,
+    speedHash: {
+      'none':0,
+      'beat':0,
+      'halfbeat':1
+    },
     switchHash: {
       '_1': 3,
       '_2': 0,
@@ -21,13 +25,13 @@ module.exports = {
     },
     pulseHash: {
       'full': 0,
-      'half': 1,
+      'half': 2,
       'none': 1
     },
     nickiHash: {
-      'none':0,
+      'none':1,
       'beat':0,
-      'strobe':1
+      'strobe':0
     }
   },
 

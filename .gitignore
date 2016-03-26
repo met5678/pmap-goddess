@@ -1,4 +1,4 @@
 node_modules/
-encoded/*
-sequences/*
+content/*
+screen/screen.js
 .DS_Store

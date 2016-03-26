@@ -1,22 +1,10 @@
 var driver = require('./driver');
 
-var vjChill  = require('./vj/chill');
-var vjGroovy = require('./vj/groovy');
-var vjAmped  = require('./vj/amped');
+var vjs = require('vj/*.js', {mode: 'hash'});
 
-var vjs = [ vjChill, vjGroovy, vjAmped ];
-var curVJ = -1;
-
-function switchDJ(index) {
-  if(index == -1) {
-    curVJ = -1;
-    return;
-  }
-  if(typeof index == 'number') {
-    curVJ = index % vjs.length;
-  }
-  else {
-    curVJ = (curVJ+1) % vjs.length;
+function switchDJ(name) {
+  if(vjs[name]) {
+    curVJ = vjs[name];
   }
 };
 

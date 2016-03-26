@@ -5,6 +5,7 @@ var videos      = require('../videos');
 var transitions = require('../transitions');
 var config      = require('../config/vj');
 var utils       = require('../utils');
+var effects     = require('./groovy-effects');
 
 var surfaces = {
   blindL: {
@@ -27,16 +28,17 @@ var phrase = {
   switchEach: 0,
   alternate: 0, 
   pulse: 'half',
-  speedMod: 1,
-  nicki: 'strobe'
+  speedMod: 'halfbeat',
+  nicki: 'none'
 };
 
 function generatePhrase() {
   phrase.switchEach = utils.pickRandom(config.groovy.switchHash);
   phrase.pulse      = utils.pickRandom(config.groovy.pulseHash);
   phrase.nicki      = utils.pickRandom(config.groovy.nickiHash);
+  phrase.speedMod   = utils.pickRandom(config.groovy.speedHash);
   phrase.alternate  = Math.random() < config.groovy.alternateFrac;
-  phrase.speedMod   = Math.random() < config.groovy.speedModFrac;
+  //phrase.speedMod   = Math.random() < config.groovy.speedModFrac;
 
   if(Math.random() < config.groovy.differentFrac) {
     surfaces.blindL.deck = 0;
@@ -50,59 +52,29 @@ function generatePhrase() {
   console.log(phrase);
 }
 
+function doBeat(blind, info) {
+  if(phrase.switchEach > 0 && (info.beatNum % phrase.switchEach) == 0) {
+    blind.deck = 1-blind.deck;
+  }
 
-function doBlind(blind, info) {
+  if(doAlternate) {
+    var which = (info.beatNum % 2 + blind.odd);
+    if(which % 2 != 0) {
+      return;
+    }
+  }
+}
+
+function doFrame(blind, info) {
   var ctx = blind.ctx;
-  ctx.clearRect(0,0,blind.width,blind.height);
+  var deck = blind.deck;
 
-  if(phrase.nicki == 'strobe') {
-    if(info.beatNum%4 <= 1) {
-      if(info.frame%6 <= 2) {
-        ctx.drawImage(videos[1-blind.deck].video,0,0);
-      }
-      else {
-        ctx.drawImage(videos[blind.deck].video,0,0);
-      }
-    }
-    else {
-      ctx.drawImage(videos[blind.deck].video,0,0);
-    }
-  }
-
-  if(phrase.nicki == 'beat') {
-    if(info.progress < 0.5) {
-      ctx.drawImage(videos[1-blind.deck].video,0,0);
-    }
-    else {
-      ctx.drawImage(videos[blind.deck].video,0,0);
-    }
-  }
-
+  ctx.save();
   
+  effects.clearSurface(blind, info);
+  effects.pulse(phrase.pulse, blind, info);
 
-  /*if(info.beat) {
-    // Switch deck
-    if(phrase.switchEach > 0 && (info.beatNum % phrase.switchEach) == 0) {
-      blind.deck = 1-blind.deck;
-    }
-  }
-
-  if(phrase.pulse != 'none') {
-    if(phrase.pulse == 'half') {
-      ctx.globalAlpha = info.pulse*.7+.3;
-    }
-    else {
-      if(phrase.alternate) {
-        var doAlternate = true;
-      }
-      ctx.globalAlpha = info.pulse;
-    }
-  }
-  else {
-    ctx.globalAlpha = .7;
-  }
-
-  if(phrase.speedMod) {
+  if(phrase.speedMod == 'beat') {
     if(info.beatNum % 2 == 0) {
       videos[0].video.playbackRate = 3;
       videos[1].video.playbackRate = 3;
@@ -112,31 +84,31 @@ function doBlind(blind, info) {
       videos[1].video.playbackRate = .7;
     }
   }
+  else if(phrase.speedMod == 'halfbeat') {
+    var factor = Math.pow(info.progress,1);
+    videos[0].video.playbackRate = 3*factor+.2;
+    videos[1].video.playbackRate = 3*factor+.2;
+  }
   else {
     videos[0].video.playbackRate = 1;
     videos[1].video.playbackRate = 1;
   }
 
-  if(doAlternate) {
-    var which = (info.beatNum % 2 + blind.odd);
-    if(which % 2 == 0) {
-     ctx.drawImage(videos[blind.deck].video,0,0);
-    }
-  }
-  else {
-    ctx.drawImage(videos[blind.deck].video,0,0);
-  }*/
-  ctx.globalAlpha = 1;
+  effects.nicki(phrase.nicki, blind, info);
+  ctx.restore();
 }
 
 function blindsFrame(info) {  
-  doBlind(surfaces.blindL, info);
-  doBlind(surfaces.blindR, info);
+  doFrame(surfaces.blindL, info);
+  doFrame(surfaces.blindR, info);
 };
 
 function onFrame(info) {
   if(info.beat && info.beatNum % config.groovy.phraseLength == 0) {
     generatePhrase();
+  }
+  if(info.beat) {
+    doBeat(info);
   }
   blindsFrame(info);
 };
