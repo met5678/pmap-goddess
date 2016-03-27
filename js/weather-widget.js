@@ -24,22 +24,26 @@ var conditions = {
   drizzle: {
     upper: 'Current Conditions',
     icon: 'drizzle.mp4',
-    lower: 'Isolated Showers'
+    lower: 'Isolated Showers',
+    pulse: true
   },
   rain: {
     upper: 'Current Conditions',
     icon: 'rain.mp4',
-    lower: 'Heavy Rain'
+    lower: 'Heavy Rain',
+    pulse: true
   },
   storm: {
     upper: 'Current Conditions',
     icon: 'storm.mp4',
-    lower: 'Scattered T-Storms'
+    lower: 'Scattered T-Storms',
+    pulse: true
   },
   wind: {
     upper: 'Current Conditions',
     icon: 'hurricane.mp4',
-    lower: 'Hurricane'
+    lower: 'Hurricane',
+    pulse: true
   },
   starry: {
     upper: 'Current Conditions',
@@ -53,11 +57,13 @@ var conditions = {
   }
 };
 
+var curCond = conditions.calm;
 function change(newCondition) {
-  var cond = conditions[newCondition];
+  cond = conditions[newCondition];
   video.src = basePath + cond.icon;
   $lowerLabel.text(cond.lower);
   $upperLabel.text(cond.upper);
+  surface.$el.css('opacity',0.7);
 }
 
 function init() {
@@ -75,5 +81,7 @@ driver.on('presetChange', function() {
 });
 
 driver.on('frame', function(info) {
-  surface.$el.css('opacity', .4 + (1-info.progress)*.5);
+  if(cond.pulse) {
+    surface.$el.css('opacity', .4 + (1-info.progress)*.5);
+  }
 });
