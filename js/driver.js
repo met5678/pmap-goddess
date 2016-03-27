@@ -1,9 +1,8 @@
 var events = require('events');
 var ee = new events.EventEmitter();
+var pulse = require('./pulse');
 
-var Pulse = require('./foreign/pulse');
-var pulse = new Pulse();
-pulse.connect('http://localhost:32000');
+
 var state = require('./state');
 
 var frame = 0;

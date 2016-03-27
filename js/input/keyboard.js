@@ -2,6 +2,7 @@ var events = require('events');
 var $ = require('jquery');
 var _ = require('lodash');
 var screenfull = require('screenfull');
+var pulse = require('../pulse');
 
 var ee = new events.EventEmitter();
 
@@ -20,6 +21,10 @@ $(document).keydown(function(e) {
 
   if(e.which >= 49 && e.which <= 58) {
     ee.emit('switchPreset',e.which-48);
+  }
+
+  if(e.which == 32) {
+    pulse.tap();
   }
 });
 
