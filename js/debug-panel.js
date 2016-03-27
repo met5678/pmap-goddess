@@ -12,13 +12,25 @@ var $preset = $('#debug-preset');
 var $vj = $('#debug-vj');
 var $params = $('#debug-params');
 
+var showing = false;
+
 function getVideoFilename(src) {
   var parts = src.split('/');
   return parts[parts.length-1];
 }
 
 driver.on('frame', function(info) {
-  if(!state.debug) return;
+  if(!state.debug) {
+    if(showing) {
+      $panel.hide();
+      showing = false;
+    }
+    return;
+  }
+  if(!showing) {
+    $panel.show();
+    showing = true;
+  }
   $beatPulse.css('opacity',info.pulse);
   $preset.text(state.preset);
   $vj.text(state.vj);

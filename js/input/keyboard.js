@@ -3,6 +3,8 @@ var $ = require('jquery');
 var _ = require('lodash');
 var screenfull = require('screenfull');
 var pulse = require('../pulse');
+var surfaces = require('../surfaces');
+var state = require('../state');
 
 var ee = new events.EventEmitter();
 
@@ -13,10 +15,13 @@ $(document).keydown(function(e) {
       screenfull.request();
     }
   }
-  if(e.which == 68) {
+  if(e.which == 83) {
     _.each(surfaces, function(surface) {
       surface.toggleBounds();
     });
+  }
+  if(e.which == 68) {
+    state.debug = 1-state.debug;
   }
 
   if(e.which >= 49 && e.which <= 58) {
