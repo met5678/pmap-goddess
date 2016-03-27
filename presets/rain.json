@@ -12,7 +12,7 @@
   "vj": {
     "name": "groovy",
     "settings": {
-      "phraseLength" : 4,
+      "phraseLength" : 16,
       "alternateFrac": 0.5,
       "differentFrac": 0.5,
       "speedModFrac" : 0.5,
@@ -27,7 +27,7 @@
         "none": 1
       },
       "nickiHash": {
-        "none"  : 0,
+        "none"  : 1,
         "beat"  : 0,
         "strobe": 1
       }

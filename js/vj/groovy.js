@@ -53,15 +53,15 @@ function generatePhrase() {
 }
 
 function doBeat(info) {
-  if(phrase.switchEach > 0 && (info.beatNum % phrase.switchEach) == 0) {
+  if(phrase.nicki == 'none' && phrase.switchEach > 0 && (info.beatNum % phrase.switchEach) == 0) {
     surfaces.blindL.deck = 1-surfaces.blindL.deck;
     surfaces.blindR.deck = 1-surfaces.blindR.deck;
   }
 
   if(phrase.speedMod) {
     if(info.beatNum % 2 == 0) {
-      videos[0].video.playbackRate = 3;
-      videos[1].video.playbackRate = 3;
+      videos[0].video.playbackRate = 2;
+      videos[1].video.playbackRate = 2;
     }
     else {
       videos[0].video.playbackRate = .7;
@@ -80,13 +80,15 @@ function doFrame(blind, info) {
   
   effects.clearSurface(blind, info);
 
-  if(phrase.alternate) {
-    var which = (info.beatNum % 2 + blind.odd);
-    if(which % 2 != 0) {
-      return;
+  if(phrase.nicki == 'none') {
+    if(phrase.alternate) {
+      var which = (info.beatNum % 2 + blind.odd);
+      if(which % 2 != 0) {
+        return;
+      }
     }
+    effects.pulse(phrase.pulse, blind, info);
   }
-  effects.pulse(phrase.pulse, blind, info);
   effects.nicki(phrase.nicki, blind, info);
 
   ctx.restore();
