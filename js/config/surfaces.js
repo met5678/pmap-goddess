@@ -1,10 +1,10 @@
 module.exports = {
     weather: {
-        width: 256,
-        height: 256,
+        width: 270,
+        height: 337,
         cornerPoints: [
-            [500, 55], [800, 55],
-            [500, 355],  [800, 355]
+            [510, 55], [780, 55],
+            [510, 392],  [780, 392]
         ],
         type: 'weather'
     },

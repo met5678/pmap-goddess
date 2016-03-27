@@ -63,14 +63,14 @@ function change(newCondition) {
   video.src = basePath + cond.icon;
   $lowerLabel.text(cond.lower);
   $upperLabel.text(cond.upper);
-  surface.$el.css('opacity',0.7);
+  surface.$el.css('opacity',0.5);
 }
 
 function init() {
   surface.$el.append(video);
   surface.$el.append($lowerLabel);
   surface.$el.append($upperLabel);
-  surface.$el.css('opacity',0.7);
+  surface.$el.css('opacity',0.5);
 }
 init();
 
@@ -82,6 +82,6 @@ driver.on('presetChange', function() {
 
 driver.on('frame', function(info) {
   if(cond.pulse) {
-    surface.$el.css('opacity', .4 + (1-info.progress)*.5);
+    surface.$el.css('opacity', .4 + (1-info.progress)*.4);
   }
 });
