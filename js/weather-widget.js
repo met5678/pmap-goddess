@@ -45,7 +45,12 @@ var conditions = {
     upper: 'Current Conditions',
     icon: 'starry.mp4',
     lower: 'Clear'
-  }  
+  },
+  'alert-storm': {
+    icon: 'alert.mp4',
+    upper: '',
+    lower: ''
+  }
 };
 
 function change(newCondition) {
@@ -59,6 +64,7 @@ function init() {
   surface.$el.append(video);
   surface.$el.append($lowerLabel);
   surface.$el.append($upperLabel);
+  surface.$el.css('opacity',0.7);
 }
 init();
 

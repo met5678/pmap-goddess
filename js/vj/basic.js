@@ -28,6 +28,8 @@ function blindsFrame(info) {
 
 function onFrame(info) {
   blindsFrame(info);
+  videos[0].playbackRate = 1;
+  videos[1].playbackRate = 1;
 };
 
 module.exports = {

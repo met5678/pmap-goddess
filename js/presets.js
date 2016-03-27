@@ -20,6 +20,7 @@ function change(name) {
 function changeKey(key) {
   var preset = _.find(presets, function(preset, name) {
     if(key == preset.numKey) {
+      console.log(name);
       change(name);
     }
   });

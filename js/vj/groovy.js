@@ -72,6 +72,10 @@ function doBeat(info) {
 function doFrame(blind, info) {
   var ctx = blind.ctx;
   ctx.save();
+  if(blind.odd) {
+    ctx.translate(blind.width, 0);
+    ctx.scale(-1, 1);
+  }
   
   effects.clearSurface(blind, info);
 

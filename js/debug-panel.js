@@ -14,11 +14,6 @@ var $params = $('#debug-params');
 
 var showing = false;
 
-function getVideoFilename(src) {
-  var parts = src.split('/');
-  return parts[parts.length-1];
-}
-
 driver.on('frame', function(info) {
   if(!state.debug) {
     if(showing) {
@@ -34,8 +29,6 @@ driver.on('frame', function(info) {
   $beatPulse.css('opacity',info.pulse);
   $preset.text(state.preset);
   $vj.text(state.vj);
-  if(info.beat) {
-    $deck0.text(getVideoFilename(videos[0].video.src));
-    $deck1.text(getVideoFilename(videos[1].video.src));
-  }
+  $deck0.text(videos[0].filename);
+  $deck1.text(videos[1].filename);
 });

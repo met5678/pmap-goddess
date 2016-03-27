@@ -2,9 +2,12 @@ var _ = require('lodash');
 
 var config = require('../config/videos');
 var videoQueue = require('./video-queue');
+var driver = require('../driver');
+
 
 function loadVideo() {
-  this.video.src = config.path + videoQueue.getNextVideo();
+  this.filename = videoQueue.getNextVideo();
+  this.video.src = config.path + this.filename;
 };
 
 function VideoDeck() {
@@ -15,6 +18,8 @@ function VideoDeck() {
   this.video.autoplay = true;
   this.video.addEventListener('ended', loadVideo.bind(this));
   loadVideo.call(this);
+
+  driver.on('presetChange',loadVideo.bind(this));
 };
 
 module.exports = VideoDeck;

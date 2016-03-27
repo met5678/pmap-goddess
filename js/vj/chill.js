@@ -13,7 +13,8 @@ var surfaces = {
     height: surfaces.blindL.canvas.height,
     deck: 0,
     nextTransition: 5000,
-    transition: null
+    transition: null,
+    odd: false
   },
   blindR: {
     ctx:    surfaces.blindR.ctx,
@@ -21,12 +22,19 @@ var surfaces = {
     height: surfaces.blindR.canvas.height,
     deck: 0,
     nextTransition: 10000,
-    transition: null
+    transition: null,
+    odd: true
   }  
 };
 
 function doBlind(blind, frame) {
   var ctx = blind.ctx;
+  ctx.save();
+  if(blind.odd) {
+    ctx.translate(blind.width, 0);
+    ctx.scale(-1, 1);
+  }
+
   ctx.clearRect(0,0,blind.width,blind.height);
 
   if(blind.transition) {
@@ -44,6 +52,8 @@ function doBlind(blind, frame) {
   else {
     ctx.drawImage(videos[blind.deck].video,0,0);
   }
+
+  ctx.restore();
 }
 
 var nextTransition = 0;
