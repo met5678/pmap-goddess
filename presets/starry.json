@@ -1,0 +1,20 @@
+{
+  "numKey": 6,
+  "videos": [
+    "morgan-1.mp4",
+    "morgan-2.mp4",
+    "morgan-3.mp4"
+  ],
+  "vj": {
+    "name": "chill",
+    "params": {
+      "transitionFrames": 90,
+      "minDwellFrames": 300,
+      "maxDwellFrames": 600,
+      "transitionHash": {
+        "blackfade": 3,
+        "crossfade": 2
+      }
+    }
+  }
+}
