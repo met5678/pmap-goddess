@@ -62,15 +62,23 @@ body {
   color: #FFF;
   position: absolute;
   text-align: center;
-  font-size: 16px;
+  font-size: 19px;
   font-family: monospace;
   width: 100%;
 }
 
 .weather-label.upper {
-  top: 10px;
+  top: 30px;
 }
 
 .weather-label.lower {
-  bottom: 0px;
+  bottom: 25px;
+}
+
+.weather-video {
+  position: absolute;
+  top: 50%;
+  margin-top: -128px;
+  left: 50%;
+  margin-left: -128px;
 }
