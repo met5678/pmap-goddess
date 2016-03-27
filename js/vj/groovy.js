@@ -23,17 +23,12 @@ var surfaces = {
   }
 };
 
-var phrase = {
-  switchEach: 0,
-  alternate: 0, 
-  pulse: 'half',
-  speedMod: 0,
-  nicki: 'strobe'
-};
+var phrase = null;
 
 function generatePhrase() {
   var params = state.vjSettings;
 
+  phrase = {};
   phrase.switchEach = utils.pickRandom(params.switchHash);
   phrase.pulse      = utils.pickRandom(params.pulseHash);
   phrase.nicki      = utils.pickRandom(params.nickiHash);
@@ -100,7 +95,7 @@ function blindsFrame(info) {
 };
 
 function onFrame(info) {
-  if(info.beat && info.beatNum % state.vjSettings.phraseLength == 0) {
+  if((info.beat && info.beatNum % state.vjSettings.phraseLength == 0) || !phrase) {
     generatePhrase();
   }
   if(info.beat) {

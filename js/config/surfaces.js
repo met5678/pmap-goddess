@@ -1,12 +1,12 @@
 module.exports = {
-    tilda: {
-        width: 0,
-        height: 0,
+    weather: {
+        width: 256,
+        height: 256,
         cornerPoints: [
-            [0, 0],  [0, 0],
-            [0, 0], [0, 0]
+            [500, 55], [800, 55],
+            [500, 355],  [800, 355]
         ],
-        type: 'fugueInk'
+        type: 'weather'
     },
     blindL: {
         width: 381,

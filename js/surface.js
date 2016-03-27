@@ -29,8 +29,7 @@ function Surface(surfaceConfig) {
 
     applyTransform(this.$el, from, to);
 
-    if(surfaceConfig.type == 'fugueInk') {
-        //initFugueInk();
+    if(surfaceConfig.type == 'weather') {
     }
     else {
         this.canvas = document.createElement('canvas');
