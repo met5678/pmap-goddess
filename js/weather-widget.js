@@ -54,6 +54,11 @@ var conditions = {
     icon: 'alert.mp4',
     upper: '',
     lower: ''
+  },
+  'alert-wind': {
+    icon: 'alert.mp4',
+    upper: '',
+    lower: ''
   }
 };
 
