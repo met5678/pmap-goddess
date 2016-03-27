@@ -1,5 +1,5 @@
 module.exports = {
-  path: 'encoded/',
+  path: '../content/videos/',
   decks: 2,
   width: 385,
   height: 720

@@ -1,4 +1,5 @@
 {
+  "numKey": 1,
   "videos": [
     "morgan-dance-1.mp4",
     "morgan-dance-2.mp4",
@@ -8,14 +9,16 @@
     "morgan-forecast-1.mp4",
     "clouds.mp4"
   ],
-  "vj": "chill",
-  "vjParams": {
-    "transitionFrames": 90,
-    "minDwellFrames": 300,
-    "maxDwellFrames": 600,
-    "transitionHash": {
-      "blackfade": 3,
-      "crossfade": 2
+  "vj": {
+    "name": "chill",
+    "params": {
+      "transitionFrames": 90,
+      "minDwellFrames": 300,
+      "maxDwellFrames": 600,
+      "transitionHash": {
+        "blackfade": 3,
+        "crossfade": 2
+      }
     }
   }
 }

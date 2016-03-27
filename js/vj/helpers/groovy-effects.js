@@ -1,4 +1,5 @@
-var preset = require('./preset');
+var state  = require('../../state');
+var videos = require('../../videos');
 
 function clearSurface(blind, info) {
   blind.ctx.clearRect(0,0,blind.width,blind.height);
@@ -12,12 +13,14 @@ function clearSurface(blind, info) {
   */
 }
 
+
+
 function pulse(type, blind, info) {
-  if(phrase.pulse == 'full') {
-    ctx.globalAlpha = info.pulse;
+  if(type == 'full') {
+    blind.ctx.globalAlpha = info.pulse;
     return;
   }
-  if(phrase.pulse == 'half') {
+  if(type == 'half') {
     blind.ctx.globalAlpha = info.pulse*.5+.5;
     return;
   }
@@ -25,9 +28,14 @@ function pulse(type, blind, info) {
 }
 
 function nicki(type, blind, info) {
-  if(phrase.nicki == 'strobe') {
-    if(info.beatNum%4 <= 1) {
-      if(info.frame%6 <= 2) {
+  var ctx = blind.ctx;
+  var strobeFrames = state.vjSettings.nicki.strobeFrames;
+  var lengthBeats  = state.vjSettings.nicki.lengthBeats;
+  var freqBeats    = state.vjSettings.nicki.freqBeats;
+
+  if(type == 'strobe') {
+    if(info.beatNum%freqBeats < lengthBeats) {
+      if(info.frame%(strobeFrames*2) < strobeFrames) {
         ctx.drawImage(videos[1-blind.deck].video,0,0);
       }
       else {
@@ -35,13 +43,15 @@ function nicki(type, blind, info) {
       }
     }
     else {
+      ctx.drawImage(videos[blind.deck].video,0,0);
     }
   }
-  else if(phrase.nicki == 'beat') {
+  else if(type == 'beat') {
     var val = Math.pow(info.pulse,2);
-    ctx.globalAlpha = 1-val;
+    var curAlpha = ctx.globalAlpha;
+    ctx.globalAlpha = curAlpha*(1-val);
     ctx.drawImage(videos[blind.deck].video,0,0);
-    ctx.globalAlpha = val;
+    ctx.globalAlpha = curAlpha*val;
     ctx.drawImage(videos[1-blind.deck].video,0,0);
   }
   else {
@@ -51,5 +61,6 @@ function nicki(type, blind, info) {
 
 module.exports = {
   clearSurface: clearSurface,
-  pulse:        pulse 
+  pulse:        pulse,
+  nicki:        nicki 
 };

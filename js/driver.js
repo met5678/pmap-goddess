@@ -1,16 +1,21 @@
 var events = require('events');
-var Pulse = require('./foreign/pulse');
-
-var pulse = new Pulse();
-pulse.connect('http://localhost:32000');
-
 var ee = new events.EventEmitter();
 
-var frame = 0;
-var isPlaying = true;
+var Pulse = require('./foreign/pulse');
+var pulse = new Pulse();
+pulse.connect('http://localhost:32000');
+var state = require('./state');
 
+var frame = 0;
 var curBeat = 0;
+var curPreset = '';
+
 function doFrame() {
+  if(state.preset != curPreset) {
+    ee.emit('presetChange');
+    curPreset = state.preset;
+  }
+
   var beat = pulse.beat();
   var beatNum = beat|0;
 
@@ -24,6 +29,7 @@ function doFrame() {
   else {
     var isBeat = false;
   }
+
   
   var info = {
     frame: frame,
@@ -35,18 +41,7 @@ function doFrame() {
   ee.emit('frame', info);
 
   frame++;
-  if(isPlaying) {
-    requestAnimationFrame(doFrame);
-  }
-}
-
-function play() {
-  isPlaying = true;
   requestAnimationFrame(doFrame);
-}
-
-function pause() {
-  isPlaying = false;
 }
 
 doFrame();

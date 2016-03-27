@@ -25,3 +25,35 @@ body {
   background-color: rgba(255,255,255,.4);
   outline: 1px solid #F00;
 }
+
+#debug-panel {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  color: white;
+}
+
+.debug-item {
+  margin-bottom: 15px;
+}
+
+.debug-label {
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #999999;
+  font-family: monospace;
+}
+
+.debug-value {
+  font-size: 15px;
+  color: #CCCC44;
+  font-family: monospace;
+}
+
+.debug-beat {
+  padding: 4px 8px;
+  border: 1px solid #333;
+  display: inline-block;
+}

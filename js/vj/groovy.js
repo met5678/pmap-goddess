@@ -2,10 +2,9 @@ var _           = require('lodash');
 
 var surfaces    = require('../surfaces');
 var videos      = require('../videos');
-var transitions = require('../transitions');
-var config      = require('../config/vj');
 var utils       = require('../utils');
-var effects     = require('./groovy-effects');
+var effects     = require('./helpers/groovy-effects');
+var state       = require('../state');
 
 var surfaces = {
   blindL: {
@@ -28,19 +27,20 @@ var phrase = {
   switchEach: 0,
   alternate: 0, 
   pulse: 'half',
-  speedMod: 'halfbeat',
-  nicki: 'none'
+  speedMod: 0,
+  nicki: 'strobe'
 };
 
 function generatePhrase() {
-  phrase.switchEach = utils.pickRandom(config.groovy.switchHash);
-  phrase.pulse      = utils.pickRandom(config.groovy.pulseHash);
-  phrase.nicki      = utils.pickRandom(config.groovy.nickiHash);
-  phrase.speedMod   = utils.pickRandom(config.groovy.speedHash);
-  phrase.alternate  = Math.random() < config.groovy.alternateFrac;
-  //phrase.speedMod   = Math.random() < config.groovy.speedModFrac;
+  var params = state.vjSettings;
 
-  if(Math.random() < config.groovy.differentFrac) {
+  phrase.switchEach = utils.pickRandom(params.switchHash);
+  phrase.pulse      = utils.pickRandom(params.pulseHash);
+  phrase.nicki      = utils.pickRandom(params.nickiHash);
+  phrase.alternate  = Math.random() < params.alternateFrac;
+  phrase.speedMod   = Math.random() < params.speedModFrac;
+
+  if(Math.random() < params.differentFrac) {
     surfaces.blindL.deck = 0;
     surfaces.blindR.deck = 1;
   }
@@ -52,29 +52,13 @@ function generatePhrase() {
   console.log(phrase);
 }
 
-function doBeat(blind, info) {
+function doBeat(info) {
   if(phrase.switchEach > 0 && (info.beatNum % phrase.switchEach) == 0) {
-    blind.deck = 1-blind.deck;
+    surfaces.blindL.deck = 1-surfaces.blindL.deck;
+    surfaces.blindR.deck = 1-surfaces.blindR.deck;
   }
 
-  if(doAlternate) {
-    var which = (info.beatNum % 2 + blind.odd);
-    if(which % 2 != 0) {
-      return;
-    }
-  }
-}
-
-function doFrame(blind, info) {
-  var ctx = blind.ctx;
-  var deck = blind.deck;
-
-  ctx.save();
-  
-  effects.clearSurface(blind, info);
-  effects.pulse(phrase.pulse, blind, info);
-
-  if(phrase.speedMod == 'beat') {
+  if(phrase.speedMod) {
     if(info.beatNum % 2 == 0) {
       videos[0].video.playbackRate = 3;
       videos[1].video.playbackRate = 3;
@@ -84,27 +68,37 @@ function doFrame(blind, info) {
       videos[1].video.playbackRate = .7;
     }
   }
-  else if(phrase.speedMod == 'halfbeat') {
-    var factor = Math.pow(info.progress,1);
-    videos[0].video.playbackRate = 3*factor+.2;
-    videos[1].video.playbackRate = 3*factor+.2;
-  }
   else {
     videos[0].video.playbackRate = 1;
     videos[1].video.playbackRate = 1;
   }
+}
 
+function doFrame(blind, info) {
+  var ctx = blind.ctx;
+  ctx.save();
+  
+  effects.clearSurface(blind, info);
+
+  if(phrase.alternate) {
+    var which = (info.beatNum % 2 + blind.odd);
+    if(which % 2 != 0) {
+      return;
+    }
+  }
+  effects.pulse(phrase.pulse, blind, info);
   effects.nicki(phrase.nicki, blind, info);
+
   ctx.restore();
 }
 
-function blindsFrame(info) {  
+function blindsFrame(info) {
   doFrame(surfaces.blindL, info);
   doFrame(surfaces.blindR, info);
 };
 
 function onFrame(info) {
-  if(info.beat && info.beatNum % config.groovy.phraseLength == 0) {
+  if(info.beat && info.beatNum % state.vjSettings.phraseLength == 0) {
     generatePhrase();
   }
   if(info.beat) {

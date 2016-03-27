@@ -1,4 +1,6 @@
 module.exports = {
+  basic: {},
+
   chill: {
     transitionFrames: 90,
     minDwellFrames: 300,
@@ -11,13 +13,9 @@ module.exports = {
 
   groovy: {
     phraseLength: 16,
-    alternateFrac: .635,
+    alternateFrac: .6,
     differentFrac: .35,
-    speedHash: {
-      'none':0,
-      'beat':0,
-      'halfbeat':1
-    },
+    speedModFrac: .5,
     switchHash: {
       '_1': 3,
       '_2': 0,
@@ -28,15 +26,19 @@ module.exports = {
       'half': 2,
       'none': 1
     },
+    nicki: {
+      strobeFrames: 3,
+      lengthBeats: 2,
+      freqBeats: 4
+    },
     nickiHash: {
-      'none':1,
-      'beat':0,
+      'none':0,
+      'beat':1,
       'strobe':0
     }
   },
 
   amped: {
     phraseLength: 8
-
   }
 }

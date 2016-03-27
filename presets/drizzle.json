@@ -1,0 +1,36 @@
+{
+  "numKey": 2,
+  "videos": [
+    "morgan-dance-1.mp4",
+    "morgan-dance-2.mp4",
+    "morgan-umbrella.mp4",
+    "morgan-forecast-2.mp4",
+    "morgan-dance-3.mp4",
+    "morgan-forecast-1.mp4",
+    "clouds.mp4"
+  ],
+  "vj": {
+    "name": "groovy",
+    "settings": {
+      "phraseLength" : 4,
+      "alternateFrac": 0.5,
+      "differentFrac": 0.5,
+      "speedModFrac" : 0.5,
+      "switchHash": {
+        "_1": 1,
+        "_2": 1,
+        "_0": 1
+      },
+      "pulseHash": {
+        "full": 1,
+        "half": 1,
+        "none": 1
+      },
+      "nickiHash": {
+        "none"  : 0,
+        "beat"  : 0,
+        "strobe": 1
+      }
+    }
+  }
+}

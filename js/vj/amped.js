@@ -1,4 +1,4 @@
-var _           = require('lodash');
+/*var _           = require('lodash');
 
 var surfaces    = require('../surfaces');
 var seqs        = require('../seqs');
@@ -89,4 +89,4 @@ function onFrame(info) {
 
 module.exports = {
   onFrame: onFrame
-};
+};*/

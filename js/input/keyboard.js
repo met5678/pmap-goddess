@@ -1,6 +1,9 @@
+var events = require('events');
 var $ = require('jquery');
 var _ = require('lodash');
 var screenfull = require('screenfull');
+
+var ee = new events.EventEmitter();
 
 $(document).keydown(function(e) {
   console.log(e.which);
@@ -15,13 +18,9 @@ $(document).keydown(function(e) {
     });
   }
 
-  if(e.which == 49) {
-    vj.switchDJ(0);
-  }
-  if(e.which == 50) {
-    vj.switchDJ(1);
-  }
-  if(e.which == 51) {
-    vj.switchDJ(2);
+  if(e.which >= 49 && e.which <= 58) {
+    ee.emit('switchPreset',e.which-48);
   }
 });
+
+module.exports = ee;

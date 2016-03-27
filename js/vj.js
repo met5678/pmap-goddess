@@ -1,19 +1,9 @@
 var driver = require('./driver');
-
-var vjs = require('vj/*.js', {mode: 'hash'});
-
-function switchDJ(name) {
-  if(vjs[name]) {
-    curVJ = vjs[name];
-  }
-};
+var vjs    = require('./vj/*.js', {mode: 'hash'});
+var state  = require('./state');
 
 driver.on('frame', function(info) {
-  if(curVJ >= 0) {
-    vjs[curVJ].onFrame(info);
+  if(vjs[state.vj]) {
+    vjs[state.vj].onFrame(info);
   }
 });
-
-module.exports = {
-  switchDJ: switchDJ
-};

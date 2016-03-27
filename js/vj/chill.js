@@ -2,16 +2,9 @@ var _           = require('lodash');
 
 var surfaces    = require('../surfaces');
 var videos      = require('../videos');
-var transitions = require('../transitions');
-var config      = require('../config/vj');
+var transitions = require('./helpers/chill-effects');
+var state       = require('../state');
 var utils       = require('../utils');
-
-var modes = [
-  'normal',
-  'mirror'
-];
-
-var swapped = true;
 
 var surfaces = {
   blindL: {
@@ -56,21 +49,21 @@ function doBlind(blind, frame) {
 var nextTransition = 0;
 
 function makeTransitions(frame) {
-  nextTransition += _.random(config.chill.minDwellFrames, config.chill.maxDwellFrames);
+  nextTransition += _.random(state.vjSettings.minDwellFrames, state.vjSettings.maxDwellFrames);
 
-  var transitionFunc = transitions[utils.pickRandom(config.chill.transitionHash)];
+  var transitionFunc = transitions[utils.pickRandom(state.vjSettings.transitionHash)];
   if(_.random()) {
     surfaces.blindL.transition = {
       func: transitionFunc,
       start: frame,
-      length: config.chill.transitionFrames
+      length: state.vjSettings.transitionFrames
     };
   }
   if(_.random()) {
     surfaces.blindR.transition = {
       func: transitionFunc,
       start: frame,
-      length: config.chill.transitionFrames
+      length: state.vjSettings.transitionFrames
     };
   }
 }
