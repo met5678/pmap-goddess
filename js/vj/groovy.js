@@ -83,11 +83,13 @@ function doFrame(blind, info) {
     if(phrase.alternate) {
       var which = (info.beatNum % 2 + blind.odd);
       if(which % 2 != 0) {
+        ctx.restore();
         return;
       }
     }
     effects.pulse(phrase.pulse, blind, info);
   }
+  
   effects.nicki(phrase.nicki, blind, info);
 
   ctx.restore();
