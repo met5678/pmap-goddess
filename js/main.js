@@ -1,3 +1,5 @@
+const config = require('./config');
+const clips  = require('./clips');
 var videos   = require('./videos');
 var surfaces = require('./surfaces');
 var vj       = require('./vj');
