@@ -1,94 +1,70 @@
-/*
-var _           = require('lodash');
+'use strict';
 
-var surfaces    = require('../surfaces');
-var seqs        = require('../seqs');
-var config      = require('../config/vj');
-var utils       = require('../utils');
-//var $           = require('jquery');
+const _           = require('lodash');
+const surfaces    = require('../surfaces');
+const clips       = require('../clips');
+const state       = require('../state');
+const drawFunctions = require('./pokemon/*', {mode: 'hash'});
 
-var surfaces = {
-  blindL: {
-    ctx:    surfaces.blindL.ctx,
-    width:  surfaces.blindL.canvas.width,
-    height: surfaces.blindL.canvas.height,
-    deck: 0,
-    odd: false
-  },
-  blindR: {
-    ctx:    surfaces.blindR.ctx,
-    width:  surfaces.blindR.canvas.width,
-    height: surfaces.blindR.canvas.height,
-    deck: 0,
-    odd: true
-  }
-};
+let battle = null;
 
-
-var ampedFunctions = {
-  'scrub': {
-    setup: function() {
-      seqs[0].newSequence(1);
-      seqs[1].newSequence(1);
-      seqs[2].newSequence(1);
-      seqs[3].newSequence(1);
-    },
-    calc: function(info) {
-      return {
-        prog: Math.abs(0.5 - info.progress)*2,
-        deck: info.beatNum % 4
-      }
-    }
-  },
-  'scrub2': {
-    setup: function() {
-      seqs[0].newSequence(1);
-      seqs[1].newSequence(1);
-      seqs[2].newSequence(1);
-      seqs[3].newSequence(1);
-    },
-    calc: function(info) {
-      return {
-        prog: Math.abs(0.5 - info.progress)*2,
-        deck: ((info.beatNum % 8)/2)|0
-      }
-    }
-  }
-};
-
-var phraseFunc = ampedFunctions['scrub2'];
-
-
-function generatePhrase() {
-  phraseFunc.setup();
+function populateClips(trainer) {
+  let baseTags = [ 'pokemon', trainer.tag ];
+  return {
+    pose:  clips.get({ tags: baseTags.concat('pose') })[0],
+    toss:  clips.get({ tags: baseTags.concat('throw') })[0],
+    cheer: clips.get({ tags: baseTags.concat('cheer') })[0],
+    win:   clips.get({ tags: baseTags.concat('win') })[0],
+    lose:  clips.get({ tags: baseTags.concat('lose') })[0]
+  };
 }
 
-function doBlind(blind, info) {
-  var ctx = blind.ctx;
-  ctx.clearRect(0,0,blind.width,blind.height);
+function generateBattle() {
+  let [ trainer0, trainer1 ] = _.shuffle(state.vjSettings.trainers);
 
-  var obj = phraseFunc.calc(info);
+  trainer0.clips = populateClips(trainer0);
+  trainer1.clips = populateClips(trainer1);
 
-  //ctx.globalAlpha = .4 + info.pulse*.6;
-  //$('#whichGif').html(seqs[obj.deck].name);
+  let [ creature0, creature1 ] = _.shuffle(clips.get({
+    tags: ['pokemon', 'creature']
+  }));
 
-  try { ctx.drawImage(seqs[obj.deck].getImage(obj.prog),0,0); } catch(e) {}
-  ctx.globalAlpha = 1;
+  creature0 = {
+    clip: creature0,
+    name: _.without(creature0.tags, 'pokemon', 'creature')[0]
+  };
+
+  creature1 = {
+    clip: creature1,
+    name: _.without(creature1.tags, 'pokemon', 'creature')[0]
+  };
+
+  return {
+    trainer0: trainer0,
+    trainer1: trainer1,
+    creature0: creature0,
+    creature1: creature1,
+    phase: '0-pose'
+  };
 }
 
-function blindsFrame(info) {  
-  doBlind(surfaces.blindL, info);
-  doBlind(surfaces.blindR, info);
-};
+
 
 function onFrame(info) {
-  if(info.beat && info.beatNum % config.amped.phraseLength == 0) {
-    generatePhrase();
+  if(info.beat && !battle) {
+    battle = generateBattle();
+    drawFunctions[battle.phase].setup(info, battle);
   }
-  blindsFrame(info);
+
+  if(battle) {
+    let next = drawFunctions[battle.phase].draw(info, battle);
+    if(next) {
+      drawFunctions[battle.phase].setup(info, battle);
+    }
+  }
+
 };
 
 module.exports = {
   onFrame: onFrame
 };
-*/

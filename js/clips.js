@@ -1,51 +1,24 @@
-const fs     = require('fs');
-const path   = require('path');
-const config = require('./config');
-const _      = require('lodash');
+const _     = require('lodash');
+const clips = require('./config/clips.json');
 
-const clips = [];
-
-const contentDir = config.get('contentDir');
-
-function getTags(filename) {
-  let tags = filename.split('-');
-  _.remove(tags, (tag) => { !_.isNan(tag); });
-  return tags;
-}
-
-function parseVideo(filename) {
-  clips.push({
-    path: path.join(contentDir, filename),
-    type: 'video',
-    tags: getTags(filename.substring(0, filename.length-4))
+function getClips(filter) {
+  if(!filter) {
+    return clips;
+  }
+  
+  return _.filter(clips, (clip) => {
+    if(filter.tags) {
+      if(_.difference(filter.tags, clip.tags).length > 0) {
+        return false;
+      }
+    }
+    if(filter.type && filter.type !== clip.type) {
+      return false;
+    }
+    return true;
   });
 }
 
-function parseSequence(filename) {
-  let dirPath = path.join(contentDir, filename);
-  let images = fs.readdirSync(dirPath);
-
-  clips.push({
-
-    type: 'sequence',
-  })
-}
-
-function scan() {
-  let files = fs.readdirSync(contentDir);
-  _.remove(files, (file) => file.startsWith('.'));
-
-  let videos = _.filter(files, (file) => {
-    return _.endsWith(path.join(dir, file), '.mp4')
-  });
-  let sequences = _.filter(files, (file) => {
-    return fs.statSync(path.join(dir, file).isDirectory()
-  });
-
-  _.each(videos, parseVideo);
-  _.each(sequences, parseSequence);
-}
-
-scan(contentDir);
-
-module.exports = clips;
+module.exports = {
+  get: getClips
+};

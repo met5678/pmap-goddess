@@ -9,7 +9,6 @@ var state = {
   preset: 'calm',
   vj: 'basic',
   vjSettings: {},
-  videos: [ 'morgan-1.mp4', 'morgan-2.mp4' ],
   videosChanged: 0
 };
 

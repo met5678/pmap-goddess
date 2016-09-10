@@ -10,7 +10,7 @@ function SeqDeck() {
   this.newSequence();
 };
 
-SeqDeck.prototype.newSequence = function(beats) {
+SeqDeck.prototype.getSequence = function(beats) {
   var sequence = getNextSequence(beats);
   
   this.beats = sequence.beats;

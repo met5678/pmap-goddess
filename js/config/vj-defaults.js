@@ -40,5 +40,9 @@ module.exports = {
 
   amped: {
     phraseLength: 8
+  },
+
+  pokemon: {
+    trainers: []
   }
 }

@@ -13,20 +13,18 @@ function change(name) {
     state.preset = name;
     state.vj = current.vj.name;
     state.vjSettings = _.assign(defaults[state.vj], current.vj.settings);
-    state.videos = current.videos;
   }
 };
 
 function changeKey(key) {
   var preset = _.find(presets, function(preset, name) {
     if(key == preset.numKey) {
-      console.log(name);
       change(name);
     }
   });
 };
 
-change('rain');
+change('pokemon');
 
 module.exports = {
   change:    change,

@@ -1,0 +1,40 @@
+{
+  "numKey": 0,
+  "vj": {
+    "name": "pokemon",
+    "settings": {
+      "trainers": [
+        {
+          "tag": "andrew",
+          "name": "Pucku",
+          "color": "#EE2222"
+        },
+        {
+          "tag": "emily",
+          "name": "Aldrea",
+          "color": "#FFAA00"
+        },
+        {
+          "tag": "zach",
+          "name": "Pizzah",
+          "color": "#11BB11"
+        },
+        {
+          "tag": "jon",
+          "name": "JStaal",
+          "color": "#AAAAAA"
+        },
+        {
+          "tag": "jackie",
+          "name": "Khameleon",
+          "color": "#1122EE"
+        },
+        {
+          "tag": "eileen",
+          "name": "Eilo",
+          "color": "#AA11DD"
+        }
+      ]
+    }
+  }
+}
