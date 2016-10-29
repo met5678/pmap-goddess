@@ -13,8 +13,10 @@ let startBeat = 0;
 let leftTextX = 0;
 let rightTextX = 0;
 
+let trainer = null;
+
 function getTextX(trainer, surface) {
-  let text = surface.ctx.measureText(`Team ${trainer.name}`.toUpperCase());
+  let text = surface.ctx.measureText(`Team ${trainer.name} wins`.toUpperCase());
   return (surface.canvas.width / 2) - (text.width / 2);
 }
 
@@ -24,30 +26,40 @@ function setup(info, battle) {
   leftSurface  = surfaces.blindL;
   rightSurface = surfaces.blindR;
 
-  leftDeck = seqDecks.getSeqDeck(battle.trainer0.clips.pose, {
-    playing: false
-  });
-  rightDeck = seqDecks.getSeqDeck(battle.trainer1.clips.pose, {
+  trainer = (function() {
+    if(battle.trainer0.winner) {
+      return battle.trainer0;
+    }
+    else {
+      return battle.trainer1;
+    }
+  })();
+
+  leftDeck = seqDecks.getSeqDeck(trainer.clips.win, {
     playing: false
   });
 
   leftSurface.ctx.font = '30px sans-serif';
   rightSurface.ctx.font = '30px sans-serif';
 
-  leftTextX  = getTextX(battle.trainer0, leftSurface);
-  rightTextX = getTextX(battle.trainer1, rightSurface);
+
+
+  leftTextX  = getTextX(trainer, leftSurface);
+  rightTextX = getTextX(trainer, rightSurface);
 
   startBeat = info.beatNum;
 }
 
 function draw(info, battle) {
+
   let curBeat = info.beatNum - startBeat;
   if(curBeat < 0) {
     setup(info,battle);
     curBeat = info.beatNum - startBeat;
   }
   if(curBeat >= 8) {
-    return '1-toss';
+    battle.ended = true;
+    return '0-pose';
   }
 
   leftSurface.clear();
@@ -78,15 +90,14 @@ function draw(info, battle) {
  
   progress /= 2;
   let leftImage = leftDeck.getImage(progress);
-  let rightImage = rightDeck.getImage(progress);
-  leftSurface.ctx.drawImage(leftDeck.getImage(progress), 0,0, leftSurface.canvas.width, leftSurface.canvas.height);
-  rightSurface.ctx.drawImage(rightDeck.getImage(progress), 0,0, leftSurface.canvas.width, leftSurface.canvas.height);
+  leftSurface.ctx.drawImage(leftImage, 0,0, leftSurface.canvas.width, leftSurface.canvas.height);
+  rightSurface.ctx.drawImage(leftImage, 0,0, leftSurface.canvas.width, leftSurface.canvas.height);
 
-  leftSurface.ctx.fillStyle = battle.trainer0.color;
-  rightSurface.ctx.fillStyle = battle.trainer1.color;
+  leftSurface.ctx.fillStyle = trainer.color;
+  rightSurface.ctx.fillStyle = trainer.color;
 
-  leftSurface.ctx.fillText(`Team ${battle.trainer0.name}`, leftTextX, 30);
-  rightSurface.ctx.fillText(`Team ${battle.trainer1.name}`, rightTextX, 30);
+  leftSurface.ctx.fillText(`Team ${trainer.name} wins`, leftTextX, 30);
+  rightSurface.ctx.fillText(`Team ${trainer.name} wins`, rightTextX, 30);
 
   leftSurface.ctx.restore();
   rightSurface.ctx.restore();

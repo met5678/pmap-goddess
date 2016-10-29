@@ -42,6 +42,10 @@ function Surface(surfaceConfig) {
     $container.append(this.$el);
 }
 
+Surface.prototype.clear = function() {
+    this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+}
+
 Surface.prototype.toggleBounds = function() {
     this.$el.toggleClass(boundsClass);
 }

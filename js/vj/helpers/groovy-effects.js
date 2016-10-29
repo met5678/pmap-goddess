@@ -27,40 +27,42 @@ function pulse(type, blind, info) {
   blind.ctx.globalAlpha = .7;
 }
 
-function nicki(type, blind, info) {
-  var ctx = blind.ctx;
-  var strobeFrames = state.vjSettings.nicki.strobeFrames;
-  var lengthBeats  = state.vjSettings.nicki.lengthBeats;
-  var freqBeats    = state.vjSettings.nicki.freqBeats;
+function nicki(opts, info) {
+  let { surface, source0, source1, frames } = opts;
 
-  if(type == 'strobe') {
-    if(info.beatNum%freqBeats < lengthBeats) {
-      if(info.frame%(strobeFrames*2) < strobeFrames) {
-        ctx.drawImage(videos[1-blind.deck].video,0,0);
-      }
-      else {
-        ctx.drawImage(videos[blind.deck].video,0,0);
-      }
-    }
-    else {
-      ctx.drawImage(videos[blind.deck].video,0,0);
-    }
-  }
-  else if(type == 'beat') {
-    var val = Math.pow(info.pulse,2);
-    var curAlpha = ctx.globalAlpha;
-    ctx.globalAlpha = curAlpha*(1-val);
-    ctx.drawImage(videos[blind.deck].video,0,0);
-    ctx.globalAlpha = curAlpha*val;
-    ctx.drawImage(videos[1-blind.deck].video,0,0);
+  if(info.frame%(frames*2) < frames) {
+    surface.ctx.drawImage(source0, 0, 0, surface.canvas.width, surface.canvas.height);
   }
   else {
-    ctx.drawImage(videos[blind.deck].video,0,0);
+    surface.ctx.drawImage(source1, 0, 0, surface.canvas.width, surface.canvas.height);
+  }
+}
+
+function strobe(surface, on, off, info) {
+  if(info.frame%(on+off) < on) {
+    surface.ctx.fillStyle = '#FFFFFF';
+    surface.ctx.fillRect(0,0,surface.canvas.width, surface.canvas.height);
+  }
+}
+
+function flash(surface, duration, info, color) {
+  if(!color) {
+    color = '#FFFFFF';
+  }
+
+  if(duration - info.progress > 0) {
+    surface.ctx.save();
+    surface.ctx.globalAlpha = 1 - (info.progress / duration);
+    surface.ctx.fillStyle = color;
+    surface.ctx.fillRect(0, 0, surface.canvas.width, surface.canvas.height);
+    surface.ctx.restore();
   }
 }
 
 module.exports = {
   clearSurface: clearSurface,
   pulse:        pulse,
-  nicki:        nicki 
+  nicki:        nicki,
+  strobe:       strobe,
+  flash:       flash
 };

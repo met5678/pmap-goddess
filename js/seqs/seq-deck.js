@@ -1,32 +1,30 @@
 var _ = require('lodash');
 
-var config = require('../config/seqs');
-var getNextSequence = require('./seq-queue').getNextSequence;
-
-function SeqDeck() {
-  this.sequence = [];
-  this.beats = 0;
-  this.img = document.createElement('img');
-  this.newSequence();
+function SeqDeck(clip) {
+  if(clip.type !== 'sequence') {
+    throw 'Error: Tried to create sequence deck with non-sequence clip'
+  }
+  this.clip = clip;
+  this.sequence = new Array(clip.length);
+  this.preload(0,10);
 };
 
-SeqDeck.prototype.getSequence = function(beats) {
-  var sequence = getNextSequence(beats);
-  
-  this.beats = sequence.beats;
-  this.name = sequence.folder;
-  var folder = sequence.folder;
-
-  var frames = this.beats * config.framesPerBeat;
-  for(var a=0; a<frames; a++) {
-    this.sequence[a] = new Image();
-    this.sequence[a].src = config.path + folder + '/' + folder + '_' + ('00000' + a).slice(-5) + '.png';
+SeqDeck.prototype.preload = function(frame, pad) {
+  for(let a=frame; a<frame+pad && a<this.clip.length; a++) {
+    if(!this.sequence[a]) {
+      this.sequence[a] = new Image();
+      this.sequence[a].src = `file://${this.clip.images[a]}`;
+    }
   }
 }
 
 SeqDeck.prototype.getImage = function(progress) {
-  var imageNum = (progress * this.beats * config.framesPerBeat)|0;
-  return this.sequence[imageNum];
+  let index = Math.floor(progress * this.sequence.length);
+  if(index >= this.sequence.length) {
+    index = this.sequence.length-1;
+  }
+  this.preload(index, 10);
+  return this.sequence[index];
 }
 
 module.exports = SeqDeck;

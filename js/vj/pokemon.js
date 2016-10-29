@@ -4,6 +4,7 @@ const _           = require('lodash');
 const surfaces    = require('../surfaces');
 const clips       = require('../clips');
 const state       = require('../state');
+const seqs        = require('../seqs');
 const drawFunctions = require('./pokemon/*', {mode: 'hash'});
 
 let battle = null;
@@ -31,12 +32,14 @@ function generateBattle() {
 
   creature0 = {
     clip: creature0,
-    name: _.without(creature0.tags, 'pokemon', 'creature')[0]
+    name: _.without(creature0.tags, 'pokemon', 'creature')[0],
+    hp: 100
   };
 
   creature1 = {
     clip: creature1,
-    name: _.without(creature1.tags, 'pokemon', 'creature')[0]
+    name: _.without(creature1.tags, 'pokemon', 'creature')[0],
+    hp: 100
   };
 
   return {
@@ -51,7 +54,8 @@ function generateBattle() {
 
 
 function onFrame(info) {
-  if(info.beat && !battle) {
+  if(info.beat && (!battle || battle.ended)) {
+    console.log('new battle');
     battle = generateBattle();
     drawFunctions[battle.phase].setup(info, battle);
   }
@@ -59,7 +63,10 @@ function onFrame(info) {
   if(battle) {
     let next = drawFunctions[battle.phase].draw(info, battle);
     if(next) {
+      seqs.clearDecks();
+      battle.phase = next;
       drawFunctions[battle.phase].setup(info, battle);
+      drawFunctions[battle.phase].draw(info, battle);
     }
   }
 

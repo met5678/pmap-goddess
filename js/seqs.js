@@ -1,9 +1,18 @@
-var config     = require('./config/seqs');
-var SeqDeck  = require('./seqs/seq-deck');
+const SeqDeck    = require('./seqs/seq-deck');
 
-var decks = [];
-for(var a=0; a<config.decks; a++) {
-  decks.push(new SeqDeck());
+let decks = [];
+
+function getSeqDeck(clip) {
+  let deck = new SeqDeck(clip);
+  decks.push(deck);
+  return deck;
 }
 
-module.exports = decks;
+function clearDecks() {
+  decks = [];
+}
+
+module.exports = {
+  getSeqDeck: getSeqDeck,
+  clearDecks: clearDecks
+};
