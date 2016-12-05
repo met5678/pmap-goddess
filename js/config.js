@@ -1,3 +1,3 @@
 module.exports = {
-  contentDir: '/Users/andrew/Dropbox (Personal)/pmap-vids'
+  contentDir: '/Users/andrew/video/pokemon-vids'
 };
