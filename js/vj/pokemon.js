@@ -47,7 +47,7 @@ function generateBattle() {
     trainer1: trainer1,
     creature0: creature0,
     creature1: creature1,
-    phase: '0-pose'
+    phase: '2-appear'
   };
 }
 

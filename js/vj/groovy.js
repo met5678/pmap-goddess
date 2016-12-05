@@ -1,12 +1,20 @@
-var _           = require('lodash');
+const _           = require('lodash');
 
-var surfaces    = require('../surfaces');
-var videos      = require('../videos');
-var utils       = require('../utils');
-var effects     = require('./helpers/groovy-effects');
-var state       = require('../state');
+const surfaces    = require('../surfaces');
+const clips       = require('../clips');
+const utils       = require('../utils');
+const effects     = require('./helpers/groovy-effects');
+const state       = require('../state');
 
-var surfaces = {
+let leftSurface, rightSurface;
+
+function setup(info) {
+  leftSurface  = surfaces.blindL;
+  rightSurface = surfaces.blindR;
+
+  leftDeck = vidDecks.getVidDeck
+}
+const mySurfaces = {
   blindL: {
     ctx:    surfaces.blindL.ctx,
     width:  surfaces.blindL.canvas.width,

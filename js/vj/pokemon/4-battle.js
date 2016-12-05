@@ -152,7 +152,8 @@ function draw(info, battle) {
   }
   if(curBeat >= 8) {
     if(checkWinner(info, battle)) {
-      return '5-win';
+      battle.ended = true;
+      return '2-appear';
     }
     else {
       setup(info,battle);
@@ -186,8 +187,8 @@ function draw(info, battle) {
   leftSurface.ctx.globalAlpha = 1;
   rightSurface.ctx.globalAlpha = 1;
 
-  drawHealth(battle, leftSurface, battle.creature0);
-  drawHealth(battle, rightSurface, battle.creature1);
+  // drawHealth(battle, leftSurface, battle.creature0);
+  // drawHealth(battle, rightSurface, battle.creature1);
 
   if(curBeat === 0) {
     effects.flash(leftSurface, .25, info);
